@@ -21,9 +21,6 @@ func (e *myError) Error() string {
 }
 
 // ! My Sprint
-func Sprint(a ...any) string {
-	return fmt.Sprintf("%v", a)
-}
 func Sprintf(msg string, a ...any) string {
 	return fmt.Sprintf(msg, a...)
 }
