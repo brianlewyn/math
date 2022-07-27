@@ -1,30 +1,29 @@
-package tool
+package component
 
 import (
 	"fmt"
 	"strconv"
 	"strings"
 
-	"github.com/brianlewyn/math/msg"
+	"github.com/brianlewyn/math/tools/message"
+	"github.com/brianlewyn/math/tools/utility"
 )
 
-// ! My constants.
-const ALPHABET string = "abcdefghijklmnopqrstuvwxyz"
-const NUMBERS string = "0123456789"
+const cALPHABET = utility.ALPHABET
+const cNUMBERS = utility.NUMBERS
 
-// ! My variables.
-var E_SIGNS string = "-+ .^"
+var Esigns = utility.SIGNS
 
 // ! The Add Func.
 
 func FullFields(x, gx string) error {
 	switch {
 	case x == "" && gx == "":
-		return msg.Error("Fill in both input fields.")
+		return message.Error("Fill in both input fields.")
 	case x == "":
-		return msg.Error("Fill in the field 'x'.")
+		return message.Error("Fill in the field 'x'.")
 	case gx == "":
-		return msg.Error("Fill in the field 'gx'.")
+		return message.Error("Fill in the field 'gx'.")
 	default:
 		return nil
 	}
@@ -44,11 +43,11 @@ func GetInconrrectSyntax(w *string, keyword string) {
 func CorrectFieldSyntax(x, gx string) error {
 	switch {
 	case x != "" && gx != "":
-		return msg.Error("Invalid fields.")
+		return message.Error("Invalid fields.")
 	case x != "":
-		return msg.Errorf("'%s' is not valid.", x)
+		return message.Errorf("'%s' is not valid.", x)
 	case gx != "":
-		return msg.Errorf("'%s' is not valid.", gx)
+		return message.Errorf("'%s' is not valid.", gx)
 	default:
 		return nil
 	}
@@ -57,8 +56,8 @@ func CorrectFieldSyntax(x, gx string) error {
 func HasIncorrectSyntax(x, gx string) error {
 
 	w := x
-	GetInconrrectSyntax(&x, ALPHABET)
-	GetInconrrectSyntax(&gx, w+NUMBERS+E_SIGNS)
+	GetInconrrectSyntax(&x, cALPHABET)
+	GetInconrrectSyntax(&gx, w+cNUMBERS+Esigns)
 
 	err := CorrectFieldSyntax(x, gx)
 	if err != nil {
@@ -71,7 +70,7 @@ func HasIncorrectSyntax(x, gx string) error {
 func CheckSyntax(x, gx string) error {
 
 	if len(x) > 1 {
-		return msg.Error("Only one literal is accepted.")
+		return message.Error("Only one literal is accepted.")
 	}
 
 	err := HasIncorrectSyntax(x, gx)
@@ -165,38 +164,30 @@ func FromHighToLow(s *[]float64) {
 }
 
 func EqualBaseMonomials(n2 float64, setKN [][]float64) [][]float64 {
-
 	monomials := [][]float64{}
 	for i := range setKN {
-
 		k1, n1 := setKN[i][0], setKN[i][1]
 		if n2 == n1 {
 			monomials = append(monomials, []float64{k1, n1})
 		}
-
 	}
 	return monomials
 }
 
 func SumMonomials(n float64, monomials [][]float64) []float64 {
-
-	var k float64
+	var sumK float64
 	for i := range monomials {
-		k += monomials[i][0]
+		sumK += monomials[i][0]
 	}
-
-	return []float64{k, n}
+	return []float64{sumK, n}
 }
 
 func SimplifyKN(setN []float64, setKN *[][]float64) {
-
 	t1, temp := 0, make([][]float64, len(setN))
 	for _, n := range setN {
-
 		monomials := EqualBaseMonomials(n, *setKN)
 		temp[t1] = SumMonomials(n, monomials)
 		t1++
-
 	}
 	*setKN = temp
 }
@@ -248,7 +239,7 @@ func RebuildFunc(x, gx *string, setKN [][]float64) {
 func CheckParentheses(gx, opn, cls string) error {
 	mathEquality := strings.Count(gx, opn) == strings.Count(gx, cls)
 	if !mathEquality {
-		return msg.Error("The number of parentheses is unequal.")
+		return message.Error("The number of parentheses is unequal.")
 	}
 	return nil
 }
@@ -318,7 +309,7 @@ func OperationsBetweenGroups(symbol string, group [][]float64) []float64 {
 	return group[n]
 }
 
-func SimplifyGroupKN(groupK, groupN [][]float64) ([]float64, []float64) {
+func SimplifyGroupKN_Multiply(groupK, groupN [][]float64) ([]float64, []float64) {
 	setK := OperationsBetweenGroups("*", groupK)
 	setN := OperationsBetweenGroups("+", groupN)
 	return setK, setN
