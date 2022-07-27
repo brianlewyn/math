@@ -5,7 +5,7 @@ import "github.com/brianlewyn/math/tools/component"
 func Multiply(x, gx *string) error {
 
 	var opn, cls string = "(", ")"
-	component.Esigns = "-+ .^" + opn + cls
+	component.Signs = "-+ .^" + opn + cls
 
 	err := component.FullFields(*x, *gx)
 	if err != nil {

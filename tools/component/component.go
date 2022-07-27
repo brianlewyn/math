@@ -9,20 +9,24 @@ import (
 	"github.com/brianlewyn/math/tools/utility"
 )
 
-const cALPHABET = utility.ALPHABET
-const cNUMBERS = utility.NUMBERS
+const (
+	alphabet   = utility.ALPHABET
+	numbers    = utility.NUMBERS
+	blankSpace = utility.BlankSpace
+	emptySpace = utility.EmptySpace
+)
 
-var Esigns = utility.SIGNS
+var Signs = utility.SIGNS
 
 // ! The Add Func.
 
 func FullFields(x, gx string) error {
 	switch {
-	case x == "" && gx == "":
+	case x == emptySpace && gx == emptySpace:
 		return message.Error("Fill in both input fields.")
-	case x == "":
+	case x == emptySpace:
 		return message.Error("Fill in the field 'x'.")
-	case gx == "":
+	case gx == emptySpace:
 		return message.Error("Fill in the field 'gx'.")
 	default:
 		return nil
@@ -36,17 +40,17 @@ func ReplaceSet(w *string, new string, set ...string) {
 }
 
 func GetInconrrectSyntax(w *string, keyword string) {
-	set := strings.Split(keyword, "")
-	ReplaceSet(w, "", set...)
+	set := strings.Split(keyword, emptySpace)
+	ReplaceSet(w, emptySpace, set...)
 }
 
 func CorrectFieldSyntax(x, gx string) error {
 	switch {
-	case x != "" && gx != "":
+	case x != emptySpace && gx != emptySpace:
 		return message.Error("Invalid fields.")
-	case x != "":
+	case x != emptySpace:
 		return message.Errorf("'%s' is not valid.", x)
-	case gx != "":
+	case gx != emptySpace:
 		return message.Errorf("'%s' is not valid.", gx)
 	default:
 		return nil
@@ -56,8 +60,8 @@ func CorrectFieldSyntax(x, gx string) error {
 func HasIncorrectSyntax(x, gx string) error {
 
 	w := x
-	GetInconrrectSyntax(&x, cALPHABET)
-	GetInconrrectSyntax(&gx, w+cNUMBERS+Esigns)
+	GetInconrrectSyntax(&x, alphabet)
+	GetInconrrectSyntax(&gx, w+numbers+Signs)
 
 	err := CorrectFieldSyntax(x, gx)
 	if err != nil {
@@ -82,13 +86,13 @@ func CheckSyntax(x, gx string) error {
 }
 
 func RmUnnecessarySpacesSigns(gx *string) {
-	*gx = strings.Trim(*gx, " ")
+	*gx = strings.Trim(*gx, blankSpace)
 	*gx = strings.ReplaceAll(*gx, "- ", "-")
-	ReplaceSet(gx, "", "+ ", "+", "^")
+	ReplaceSet(gx, emptySpace, "+ ", "+", "^")
 }
 
 func SplitBySpaces(gx string) []string {
-	polynomial := strings.Split(gx, " ")
+	polynomial := strings.Split(gx, blankSpace)
 	return polynomial
 }
 
@@ -196,7 +200,7 @@ func AddSpaceSigns(kxn string) string {
 	if !strings.HasPrefix(kxn, "-") {
 		kxn = "+" + kxn
 	}
-	return " " + kxn
+	return blankSpace + kxn
 }
 
 func BuildKxn(x string, kFloat, nFloat float64) string {
@@ -208,7 +212,7 @@ func BuildKxn(x string, kFloat, nFloat float64) string {
 		return k + x + "^" + n
 	}
 
-	return ""
+	return emptySpace
 }
 
 func BuildPolynomial(kxn string, i int, polynomial *string) {
@@ -227,7 +231,7 @@ func RebuildFunc(x, gx *string, setKN [][]float64) {
 		BuildPolynomial(kxn, i, &polynomial)
 	}
 
-	if polynomial != "" {
+	if polynomial != emptySpace {
 		*gx = polynomial
 	} else {
 		*gx = "0"
@@ -245,8 +249,8 @@ func CheckParentheses(gx, opn, cls string) error {
 }
 
 func SplitByParentheses(gx, opn, cls string) []string {
-	ReplaceSet(&gx, "|", cls+opn, cls+" "+opn)
-	ReplaceSet(&gx, "", cls, opn)
+	ReplaceSet(&gx, "|", cls+opn, cls+blankSpace+opn)
+	ReplaceSet(&gx, emptySpace, cls, opn)
 	return strings.Split(gx, "|")
 }
 
@@ -254,7 +258,7 @@ func SetFullPolynomial(x string, setPolynomial *[]string) {
 	for i := range *setPolynomial {
 		polynomial := SplitBySpaces((*setPolynomial)[i])
 		FullPolynomial(x, &polynomial)
-		(*setPolynomial)[i] = strings.Join(polynomial, " ")
+		(*setPolynomial)[i] = strings.Join(polynomial, blankSpace)
 	}
 }
 
