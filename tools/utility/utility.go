@@ -1,9 +1,9 @@
 package utility
 
 const (
-	ALPHABET   string = "abcdefghijklmnopqrstuvwxyz"
-	NUMBERS    string = "0123456789"
-	SIGNS      string = "-+ .^"
+	Alphabet   string = "abcdefghijklmnopqrstuvwxyz"
+	Numbers    string = "0123456789"
+	Signs      string = "-+ .^"
 	BlankSpace string = " "
 	EmptySpace string = ""
 )

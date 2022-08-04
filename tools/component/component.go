@@ -10,13 +10,13 @@ import (
 )
 
 const (
-	alphabet   = utility.ALPHABET
-	numbers    = utility.NUMBERS
+	alphabet   = utility.Alphabet
+	numbers    = utility.Numbers
 	blankSpace = utility.BlankSpace
 	emptySpace = utility.EmptySpace
 )
 
-var Signs = utility.SIGNS
+var Signs = utility.Signs
 
 // ! The Add Func.
 
@@ -155,13 +155,13 @@ func RmDuplicateValues(setN *[]float64) {
 }
 
 func FromHighToLow(s *[]float64) {
-	var temporl float64
-	for x := range *s {
-		for y := range *s {
-			if (*s)[x] > (*s)[y] {
-				temporl = (*s)[x]
-				(*s)[x] = (*s)[y]
-				(*s)[y] = temporl
+	var temp float64
+	for j := range *s {
+		for i := range *s {
+			if (*s)[j] > (*s)[i] {
+				temp = (*s)[j]
+				(*s)[j] = (*s)[i]
+				(*s)[i] = temp
 			}
 		}
 	}
