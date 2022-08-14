@@ -5,29 +5,29 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/brianlewyn/math/tools/message"
-	"github.com/brianlewyn/math/tools/utility"
+	m "github.com/brianlewyn/math/tools/message"
+	u "github.com/brianlewyn/math/tools/utility"
 )
 
 const (
-	alphabet   = utility.Alphabet
-	numbers    = utility.Numbers
-	blankSpace = utility.BlankSpace
-	emptySpace = utility.EmptySpace
+	alphabet   = u.Alphabet
+	numbers    = u.Numbers
+	blankSpace = u.BlankSpace
+	emptySpace = u.EmptySpace
 )
 
-var Signs = utility.Signs
+var Signs = u.Signs
 
 // ! The Add Func.
 
 func FullFields(x, gx string) error {
 	switch {
 	case x == emptySpace && gx == emptySpace:
-		return message.Error("Fill in both input fields.")
+		return m.Error("Fill in both input fields.")
 	case x == emptySpace:
-		return message.Error("Fill in the field 'x'.")
+		return m.Error("Fill in the field 'x'.")
 	case gx == emptySpace:
-		return message.Error("Fill in the field 'gx'.")
+		return m.Error("Fill in the field 'gx'.")
 	default:
 		return nil
 	}
@@ -47,18 +47,17 @@ func GetInconrrectSyntax(w *string, keyword string) {
 func CorrectFieldSyntax(x, gx string) error {
 	switch {
 	case x != emptySpace && gx != emptySpace:
-		return message.Error("Invalid fields.")
+		return m.Error("Invalid fields.")
 	case x != emptySpace:
-		return message.Errorf("'%s' is not valid.", x)
+		return m.Errorf("'%s' is not valid.", x)
 	case gx != emptySpace:
-		return message.Errorf("'%s' is not valid.", gx)
+		return m.Errorf("'%s' is not valid.", gx)
 	default:
 		return nil
 	}
 }
 
 func HasIncorrectSyntax(x, gx string) error {
-
 	w := x
 	GetInconrrectSyntax(&x, alphabet)
 	GetInconrrectSyntax(&gx, w+numbers+Signs)
@@ -72,9 +71,8 @@ func HasIncorrectSyntax(x, gx string) error {
 }
 
 func CheckSyntax(x, gx string) error {
-
 	if len(x) > 1 {
-		return message.Error("Only one literal is accepted.")
+		return m.Error("Only one literal is accepted.")
 	}
 
 	err := HasIncorrectSyntax(x, gx)
@@ -104,7 +102,6 @@ func FullPolynomial(x string, polynomial *[]string) {
 }
 
 func HasPrefixOne(x string, monomial *string) {
-
 	positivePrefix := strings.HasPrefix(*monomial, x)
 	negativePrefix := strings.HasPrefix(*monomial, "-"+x)
 
@@ -129,7 +126,6 @@ func FullMonomial(x string, monomial *string) {
 }
 
 func StoreSetsNandKN(x string, polynomial []string) ([]float64, [][]float64) {
-
 	setN := make([]float64, len(polynomial))
 	setKN := make([][]float64, len(polynomial))
 
@@ -204,10 +200,7 @@ func AddSpaceSigns(kxn string) string {
 }
 
 func BuildKxn(x string, kFloat, nFloat float64) string {
-
-	k := fmt.Sprint(kFloat)
-	n := fmt.Sprint(nFloat)
-
+	k, n := fmt.Sprint(kFloat), fmt.Sprint(nFloat)
 	if !(k == "0") {
 		return k + x + "^" + n
 	}
@@ -224,7 +217,6 @@ func BuildPolynomial(kxn string, i int, polynomial *string) {
 }
 
 func RebuildFunc(x, gx *string, setKN [][]float64) {
-
 	var polynomial string
 	for i, monomial := range setKN {
 		kxn := BuildKxn(*x, monomial[0], monomial[1])
@@ -236,8 +228,6 @@ func RebuildFunc(x, gx *string, setKN [][]float64) {
 	} else {
 		*gx = "0"
 	}
-
-	// *gx = strings.ReplaceAll(*gx, "+ ", "")
 }
 
 // ! The Mutiply Func.
@@ -245,7 +235,7 @@ func RebuildFunc(x, gx *string, setKN [][]float64) {
 func CheckParentheses(gx, opn, cls string) error {
 	mathEquality := strings.Count(gx, opn) == strings.Count(gx, cls)
 	if !mathEquality {
-		return message.Error("The number of parentheses is unequal.")
+		return m.Error("The number of parentheses is unequal.")
 	}
 	return nil
 }
@@ -265,7 +255,6 @@ func SetFullPolynomial(x string, setPolynomial *[]string) {
 }
 
 func StoreSetsKN(x string, polynomial []string) ([]float64, []float64) {
-
 	setK := make([]float64, len(polynomial))
 	setN := make([]float64, len(polynomial))
 
@@ -280,7 +269,6 @@ func StoreSetsKN(x string, polynomial []string) ([]float64, []float64) {
 }
 
 func GetGroupsKN(x string, setPolynomial []string) ([][]float64, [][]float64) {
-
 	groupSetK := make([][]float64, len(setPolynomial))
 	groupSetN := make([][]float64, len(setPolynomial))
 
@@ -332,7 +320,6 @@ func SingleSet(setK, setN []float64) [][]float64 {
 // ! The Add Func [derivatives].
 
 func KxnRuleSetKN(x string, polynomial *[][]float64) {
-
 	t, n := 0, len(*polynomial)
 	for _, monomial := range *polynomial {
 		k := monomial[0] * monomial[1]

@@ -1,29 +1,27 @@
 package derivatives
 
-import (
-	"github.com/brianlewyn/math/tools/component"
-)
+import c "github.com/brianlewyn/math/tools/component"
 
 func Add(x, gx *string) error {
 
-	err := component.FullFields(*x, *gx)
+	err := c.FullFields(*x, *gx)
 	if err != nil {
 		return err
 	}
 
-	err = component.CheckSyntax(*x, *gx)
+	err = c.CheckSyntax(*x, *gx)
 	if err != nil {
 		return err
 	}
 
-	component.RmUnnecessarySpacesSigns(gx)
-	polynomial := component.SplitBySpaces(*gx)
+	c.RmUnnecessarySpacesSigns(gx)
+	polynomial := c.SplitBySpaces(*gx)
 
-	component.FullPolynomial(*x, &polynomial)
-	_, setKN := component.StoreSetsNandKN(*x, polynomial)
+	c.FullPolynomial(*x, &polynomial)
+	_, setKN := c.StoreSetsNandKN(*x, polynomial)
 
-	component.KxnRuleSetKN(*x, &setKN)
-	component.RebuildFunc(x, gx, setKN)
+	c.KxnRuleSetKN(*x, &setKN)
+	c.RebuildFunc(x, gx, setKN)
 
 	return nil
 }
