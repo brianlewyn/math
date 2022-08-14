@@ -1,4 +1,4 @@
-package arithmetic
+package derivatives
 
 import (
 	"github.com/brianlewyn/math/tools/component"
@@ -20,12 +20,9 @@ func Add(x, gx *string) error {
 	polynomial := component.SplitBySpaces(*gx)
 
 	component.FullPolynomial(*x, &polynomial)
-	setN, setKN := component.StoreSetsNandKN(*x, polynomial)
+	_, setKN := component.StoreSetsNandKN(*x, polynomial)
 
-	component.RmDuplicateValues(&setN)
-	component.FromHighToLow(&setN)
-
-	component.SimplifyKN(setN, &setKN)
+	component.KxnRuleSetKN(*x, &setKN)
 	component.RebuildFunc(x, gx, setKN)
 
 	return nil

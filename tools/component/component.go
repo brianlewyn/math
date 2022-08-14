@@ -236,6 +236,8 @@ func RebuildFunc(x, gx *string, setKN [][]float64) {
 	} else {
 		*gx = "0"
 	}
+
+	// *gx = strings.ReplaceAll(*gx, "+ ", "")
 }
 
 // ! The Mutiply Func.
@@ -325,4 +327,27 @@ func SingleSet(setK, setN []float64) [][]float64 {
 		setKN[i] = []float64{setK[i], setN[i]}
 	}
 	return setKN
+}
+
+// ! The Add Func [derivatives].
+
+func KxnRuleSetKN(x string, polynomial *[][]float64) {
+
+	t, n := 0, len(*polynomial)
+	for _, monomial := range *polynomial {
+		k := monomial[0] * monomial[1]
+		n := monomial[1] - 1
+		if !(k == 0) {
+			(*polynomial)[t] = []float64{k, n}
+			t++
+		}
+	}
+
+	*polynomial = append((*polynomial)[:t], (*polynomial)[n:]...)
+	temporal := make([][]float64, t)
+	for i := range temporal {
+		temporal[i] = (*polynomial)[i]
+	}
+
+	*polynomial = temporal
 }
