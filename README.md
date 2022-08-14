@@ -30,7 +30,8 @@ go get -u github.com/brianlewyn/math
 * If you enter `+kx^+n` as `kxn`, the program you can infer and reconstruct the expressions to their base form, to do the operations correctly.
 * For both the constant and the exponent, you can use integers or floats.
 * Negative signs are taken into account, both for constants and for the exponent.
-* Between each positive expression you can put `x x`, `x +x` or `x + x` and when it is negative you can put `x -x` or `x - x`.
+* Between each positive expression you can put `x x`, `x +x` or `x + x`.
+* Between each negative expression you can put `x -x` or `x - x`.
 
 ## Arithmetic
 ### Arithmetic.Add()
